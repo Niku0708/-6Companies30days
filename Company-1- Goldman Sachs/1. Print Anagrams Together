@@ -1,0 +1,36 @@
+class Solution{
+  public:
+    vector<vector<string> > Anagrams(vector<string>& sl) {
+        //code here
+        vector<vector<string>> ans;
+        vector<pair<string, int>> vec(sl.size());
+        string s;
+        for(int i=0; i<sl.size(); i++)
+        {
+            s = sl[i];
+            sort(s.begin(), s.end());
+            vec[i] = {s, i};
+        }
+        sort(vec.begin(), vec.end());
+        
+        s = vec[0].first;
+        vector<string> temp;
+        temp.push_back(sl[vec[0].second]);
+        for(int i=1; i<vec.size(); i++)
+        {
+            if(vec[i].first == s)
+            {
+                temp.push_back(sl[vec[i].second]);
+            }
+            else
+            {
+                s = vec[i].first;
+                ans.push_back(temp);
+                temp.clear();
+                temp.push_back(sl[vec[i].second]);
+            }
+        }
+        ans.push_back(temp);
+        return ans;
+    }
+};
