@@ -1,0 +1,23 @@
+string encode(string src)
+{
+    if(src.length() == 0)
+        return src;
+    string ans;
+    char ch = src[0];
+    int count = 1;
+    for(int i=1; i<src.length(); i++)
+    {
+        if(src[i] == ch)
+            count++;
+        else
+        {
+            ans.push_back(ch);
+            ans.push_back('0'+count);
+            ch = src[i];
+            count = 1;
+        }
+    }
+    ans.push_back(ch);
+    ans.push_back('0'+count);
+    return ans;
+}    
