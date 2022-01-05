@@ -1,0 +1,21 @@
+class Solution{   
+public:
+    string printMinNumberForPattern(string S){
+        // code here 
+        stack<int> num;
+        string ans;
+    
+        for(int i =0; i<=S.length(); i++)
+        {
+            num.push(i+1);
+            if(i == S.length() or S[i] == 'I')
+            {
+                while(!num.empty()){
+                    ans.push_back(num.top()+ '0');
+                    num.pop();
+                }
+            }
+        }
+        return ans;
+    }
+};
