@@ -1,0 +1,30 @@
+class Solution{
+public:	
+
+	// #define ull unsigned long long
+	/* Function to get the nth ugly number*/
+	ull getNthUglyNo(int n) {
+	    vector<ull> numbers(n);
+	    numbers[0] = 1;
+	    int i2=0, i3=0, i5=0;
+	    for(int i=1; i<n; i++)
+	    {
+	        while(numbers[i2]*2 <= numbers[i-1])
+	            i2++;
+	        while(numbers[i3]*3 <= numbers[i-1])
+	            i3++;
+	        while(numbers[i5]*5 <= numbers[i-1])
+	            i5++;
+	        ull lowest = min({numbers[i2]*2, numbers[i3]*3, numbers[i5]*5});
+	       // cout<<lowest<<" ";
+	        numbers[i] = lowest;
+	        if(lowest == numbers[i2]*2)
+	            i2++;
+	        else if(lowest == numbers[i3]*3)
+	            i3++;
+	        else
+	            i5++;
+	    }
+	    return numbers[n-1];
+	}
+};
