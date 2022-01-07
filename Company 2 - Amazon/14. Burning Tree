@@ -1,0 +1,48 @@
+class Solution {
+  public:
+    int ans;
+    
+    int height(Node *root)
+    {
+        if(root == NULL)
+            return 0;
+        
+        return max(height(root->left), height(root->right))+1;
+    }
+    
+    pair<bool ,int> solve(Node *root, int target) 
+    {
+        if(root == NULL)
+            return {false, 0};
+        
+        if(root->data == target)
+        {
+            ans = height(root) - 1;
+            return {true, 1};
+        }
+        
+        pair<bool, int> left = solve(root->left, target);
+        if(left.first)
+        {
+            ans = max(ans, left.second + height(root->right));
+            return {true, left.second+1};
+        }
+        
+        pair<bool, int> right = solve(root->right, target);
+        if(right.first)
+        {
+            ans = max(ans, right.second + height(root->left));
+            return {true, right.second+1};
+        }
+        return {false, 0};
+    }
+    
+    int minTime(Node* root, int target) 
+    {
+        // Your code goes here
+        ans = 0;
+        solve(root, target);
+        return ans;
+        
+    }
+};
