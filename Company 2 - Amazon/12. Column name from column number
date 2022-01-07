@@ -1,0 +1,27 @@
+class Solution{
+    public:
+    
+    char digit(int n)
+    {
+        if(n==0)
+            return'Z';
+        return char('A'+n-1);
+    }
+    
+    string colName (long long int n)
+    {
+        // your code here
+        string ans;
+        while(n!= 0)
+        {
+            ans.push_back(digit(n%26));
+            if(n%26 == 0)
+                n--;
+            n /= 26;
+        }
+        for (int i = 0; i<ans.length()/2; i++)
+            swap(ans[i], ans[ans.length() - i - 1]);
+        // return reverse(ans.begin(), ans.end());
+        return ans;
+    }
+};
