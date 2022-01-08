@@ -1,0 +1,59 @@
+class Solution{
+public:	
+
+    static bool compare(char a, char b)
+    {
+        if(a == '!')
+            return true;
+        if(a == '#')
+        {
+            if(b == '!')
+                return false;
+            return true;
+        }
+        if(a == '$')
+        {
+            if(b == '!' or b == '#')
+                return false;
+            return true;
+        }
+        if(a == '%')
+        {
+            if(b == '!' or b == '#' or b == '$')
+                return false;
+            return true;
+        }
+        if(a == '&')
+        {
+            if(b == '~' or b == '^' or b == '@' or b == '*')
+                return true;
+            return false;
+        }
+        if(a == '*')
+        {
+            if(b == '~' or b == '^' or b == '@')
+                return true;
+            return false;
+        }
+        if(a == '@')
+        {
+            if(b == '~' or b == '^')
+                return true;
+            return false;
+        }
+        if(a == '^')
+        {
+            if(b == '~')
+                return true;
+            return false;
+        }
+        return false;
+    }
+
+	void matchPairs(char nuts[], char bolts[], int n) {
+	    // code here
+	    sort(nuts, nuts+n, compare);
+	    sort(bolts, bolts+n, compare);
+	}
+
+};
