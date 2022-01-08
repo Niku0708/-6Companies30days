@@ -1,0 +1,54 @@
+public:
+
+    int isValid(vector<vector<int>> mat){
+        // code here
+        set<int> check;
+        for(int i=0; i<9; i++)
+        {
+            check.clear();
+            for(int j=0; j<9; j++)
+            {
+                if(mat[i][j] == 0)
+                    continue;
+                if(check.count(mat[i][j]))
+                    return 0;
+                else
+                    check.insert(mat[i][j]);
+            }
+        }
+        for(int j=0; j<9; j++)
+        {
+            check.clear();
+            for(int i=0; i<9; i++)
+            {
+                if(mat[i][j] == 0)
+                    continue;
+                if(check.count(mat[i][j]))
+                    return 0;
+                else
+                    check.insert(mat[i][j]);
+            }
+        }
+        
+        for(int rb = 0; rb<3; rb++)
+        {
+            for(int cb = 0; cb<3; cb++)
+            {
+                check.clear();
+                for(int i=rb*3; i<rb*3+3; i++)
+                {
+                    for(int j=cb*3; j<cb*3+3; j++)
+                    {
+                        if(mat[i][j] == 0)
+                            continue;
+                        if(check.count(mat[i][j]))
+                            return 0;
+                        else
+                            check.insert(mat[i][j]);
+                    }
+                }
+            }
+        }
+        return 1;
+    }
+};
