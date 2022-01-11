@@ -1,0 +1,87 @@
+class node{
+    public:
+    bool terminal;
+    vector<node*> letter;
+    
+    node(){
+        terminal = false;
+        vector<node*> temp(26, NULL);
+        letter = temp;
+    }
+};
+
+class Solution{
+public:
+
+    void combinations(node *ptr, string s, vector<string> &ans)
+    {
+        if(ptr == NULL)
+            return;
+        
+        if(ptr->terminal)
+            ans.push_back(s);
+        
+        for(int i=0; i<26; i++)
+        {
+            if(ptr->letter[i] != NULL)
+                combinations(ptr->letter[i], s+char('a'+i), ans);
+        }
+    }
+    
+    vector<string> print(string prefix, node *root)
+    {
+        vector<string> ans;
+        node *ptr = root;
+        for(int i=0; i<prefix.size(); i++)
+        {
+            if(ptr->letter[prefix[i]-'a'] == NULL)
+                return ans;
+            else
+                ptr = ptr->letter[prefix[i]-'a'];
+        }
+        
+        combinations(ptr, prefix, ans);
+        return ans;
+    }
+    
+    vector<vector<string>> displayContacts(int n, string contact[], string s)
+    {
+        node *root = new node;
+        node *ptr = NULL;
+        for(int j=0; j<n; j++){
+            string name = contact[j];
+            // cout<<name<<" -> ";
+            ptr = root;
+            for(int i=0; i<name.length(); i++)
+            {
+                // cout<<name[i]<<"-";
+                if(ptr->letter[name[i]-'a'] == NULL) { //make new node
+                    // cout<<"newing ";
+                    ptr->letter[name[i]-'a'] = new node();
+                }
+                ptr = ptr->letter[name[i]-'a'];
+                if(i == name.length()-1)
+                    ptr->terminal = true;
+            }
+        }
+    
+        // cout<<"\n";
+        // vector<string> names;
+        // combinations(root, "", names);
+        // for(auto name:names)
+            // cout<<name<<"\n";
+    
+    
+        //print
+        vector<vector<string>> ans;
+        for(int i=1; i<=s.length(); i++)
+        {
+            string prefix = s.substr(0, i);
+            vector<string> temp = print(prefix, root);
+            if(temp.size()==0)
+                break;
+            ans.push_back(temp);
+        }
+        return ans;
+    }
+};
