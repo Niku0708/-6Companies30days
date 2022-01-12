@@ -1,0 +1,42 @@
+class Solution {
+public:
+
+    bool checkCycle(int src, list<int> nodes[], vector<bool> &visited, vector<bool> &path)
+    {
+        path[src] = true;
+        visited[src] = true;
+        
+        for(auto nbr:nodes[src])
+        {
+            if(path[nbr])
+                return true;
+            if(!visited[nbr])
+            {
+                visited[nbr] = true;
+                if(checkCycle(nbr, nodes, visited, path))
+                    return true;
+            }
+        }
+        path[src] = false;
+        return false;
+    }
+
+	bool isPossible(int n, vector<pair<int, int> >& prereq) {
+	    // Code here
+	    list<int> nodes[n];
+	    for(auto p:prereq)
+	        nodes[p.first].push_back(p.second);
+	        
+	    vector<bool> visited(n, false);
+	    vector<bool> path(n, false); 
+	    
+	    for(int i=0; i<n; i++)
+	    {
+	        if(!visited[i] and checkCycle(i, nodes, visited, path))
+	        {
+	            return false;
+	        }
+	    }
+	    return true;
+	}
+};
