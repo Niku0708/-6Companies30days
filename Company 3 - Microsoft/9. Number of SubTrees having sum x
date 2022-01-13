@@ -1,0 +1,21 @@
+int ans;
+
+int sum(Node *root, int x)
+{
+    if(root == NULL)
+        return 0;
+    
+    int left = sum(root->left, x);
+    int right = sum(root->right, x);
+    int curr = left+right+root->data;
+    if(curr == x)
+        ans++;
+    return curr;
+}
+
+int countSubtreesWithSumX(Node* root, int x)
+{
+	ans = 0;
+	sum(root, x);
+	return ans;
+}
