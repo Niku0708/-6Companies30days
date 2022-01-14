@@ -1,0 +1,19 @@
+vector<string> generate(int n)
+{
+	queue<string> q;
+	string s = "1";
+	q.push(s);
+	vector<string> ans;
+	while(n--)
+	{
+	    string temp = q.front(); 
+	    s = temp;
+	    ans.push_back(temp);
+	    q.pop();
+	    s.push_back('0');
+	    temp.push_back('1');
+	    q.push(s);
+	    q.push(temp);
+	}
+	return ans;
+}
