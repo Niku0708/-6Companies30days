@@ -1,0 +1,37 @@
+class Solution{
+
+  public:
+    
+    void subset(vector<vector<bool>> &mat, int arr[], int n, int half)
+    {
+        for(int i=0; i<=n; i++)
+            mat[i][0] = true;
+            
+        for(int i=1; i<=n; i++)
+        {
+            for(int j=1; j<=half; j++)
+            {
+                if(arr[i-1] <= j)
+                    mat[i][j] = (mat[i-1][j] or mat[i-1][j-arr[i-1]]);
+                else
+                    mat[i][j] = mat[i-1][j];
+            }
+        }
+    }
+  
+	int minDifference(int arr[], int n)  { 
+	    // Your code goes here
+	    int total = accumulate(arr, arr+n, 0);
+	    int half = total/2;
+	    
+	    vector<vector<bool>> mat(n+1, vector<bool> (half+1, false));
+	    subset(mat, arr, n, half);
+	    
+	    for(int j=half; j>=0; j--)
+	    {
+	        if(mat[n][j])
+	            return total-2*j;
+	    }
+	    return 0;
+	} 
+};
