@@ -1,0 +1,26 @@
+class Solution{
+public:
+    int equalPartition(int N, int arr[])
+    {
+        // code here
+        int sum = accumulate(arr, arr+N, 0);
+        if(sum % 2 != 0)
+            return 0;
+        
+        vector<vector<bool>> mat(N+1, vector<bool> (sum/2 +1, false));
+        for(int i=0; i<=N; i++)
+            mat[i][0] = true;
+        
+        for(int i=1; i<=N; i++)
+        {
+            for(int j=1; j<=sum/2; j++)
+            {
+                if(arr[i-1] > j)
+                    mat[i][j] = mat[i-1][j];
+                else
+                    mat[i][j] = mat[i-1][j] or mat[i-1][j-arr[i-1]];
+            }
+        }
+        return mat[N][sum/2];
+    }
+};
