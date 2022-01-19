@@ -1,0 +1,26 @@
+class Solution {
+public:
+    vector<vector<int>> dp;
+    int helper(vector<int> &A, int start, int end)
+    {
+        if(start>end)
+            return 0;
+        if(dp[start][end] != -1)
+            return dp[start][end];
+        if(start == end)
+            return dp[start][end] = A[start];
+        
+        int left = A[start] + min(helper(A, start+2, end), helper(A, start+1, end-1));
+        int right = A[end] + min(helper(A, start+1, end-1), helper(A, start, end-2));
+        
+        dp[start][end] = max(left, right);
+        return dp[start][end];
+    }
+    
+    int maxCoins(vector<int>&A,int n)
+    {
+	    //Write your code here
+	    dp.resize(n, vector<int> (n, -1));
+	    return helper(A, 0, n-1);
+    }
+};
