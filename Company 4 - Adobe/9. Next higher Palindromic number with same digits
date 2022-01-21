@@ -1,0 +1,16 @@
+class Solution{
+  public:
+    string nextPalin(string s) { 
+        string half = s.substr(0, s.length()/2);
+        string next = half;
+        next_permutation(next.begin(), next.end());
+        if(next <= half)
+            return "-1";
+        half = next;
+        reverse(half.begin(), half.end());
+        if(s.length()%2 != 0)
+            next.push_back(s[s.length()/2]);
+        next += half;
+        return next;
+    }
+};
