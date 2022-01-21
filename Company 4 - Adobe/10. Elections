@@ -1,0 +1,20 @@
+class Solution{
+  public:
+    vector<string> winner(string arr[],int n)
+    {
+        map<string, int> votes;
+        for(int i=0; i<n; i++)
+            votes[arr[i]]++;
+        string ans;
+        int vote=0;
+        for(auto candidate:votes)
+        {
+            if(candidate.second > vote)
+            {
+                ans = candidate.first;
+                vote = candidate.second;
+            }
+        }
+        return {ans, to_string(vote)};
+    }
+};
