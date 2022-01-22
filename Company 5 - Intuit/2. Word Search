@@ -1,0 +1,52 @@
+class Solution {
+public:
+    int n, m;
+    bool valid(int i, int j, vector<vector<bool>> &visited)
+    {
+        return i>=0 and j>=0 and i<n and j<m and !visited[i][j];
+    }
+    
+    int dir[5] = {-1, 0, 1, 0, -1};
+    
+    bool dfs(vector<vector<char>>& board, string &word, int i, int j, vector<vector<bool>> &visited, int index = 1)
+    {
+        if(index == word.size())
+            return true;
+        
+        for(int k=0; k<4; k++)
+        {
+            int x = i+dir[k];
+            int y = j+dir[k+1];
+            
+            if(valid(x, y, visited) and word[index] == board[x][y])
+            {
+                visited[x][y] = true;
+                if(dfs(board, word, x, y, visited, index+1))
+                    return true;
+                visited[x][y] = false;
+                
+            }
+        }
+        return false;
+    }
+
+    bool isWordExist(vector<vector<char>>& board, string word) {
+        n = board.size();
+        m = board[0].size();
+        vector<vector<bool>> visited(n, (vector<bool> (m, false)));
+        for(int i=0; i<n; i++)
+        {
+            for(int j=0; j<m; j++)
+            {
+                if(board[i][j] == word[0])
+                {
+                    visited[i][j] = true;
+                    if(dfs(board, word, i, j, visited))
+                        return true;
+                    visited[i][j] = false;
+                }
+            }
+        }
+        return false;
+    }
+};
