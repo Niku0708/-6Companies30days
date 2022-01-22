@@ -1,0 +1,39 @@
+class Solution
+{
+    public:
+    string ans;
+    
+    void large(string &str, int k, int index)
+    {
+        if(k < 1 or index>=str.length())
+            return;
+        
+        char m = str[index];
+        for(int i=index+1; i<str.length(); i++)
+        {
+            if(str[i] > m)
+                m = str[i];
+        }
+        if(m != str[index]){
+            for(int i=index+1; i<str.length(); i++)
+            {
+                if(str[i] == m)
+                {
+                    swap(str[i], str[index]);
+                    ans = max(ans, str);
+                    large(str, k-1, index+1);
+                    swap(str[i], str[index]);
+                }
+            }
+        }
+        else
+            large(str, k, index+1);
+    }
+    
+    string findMaximumNum(string str, int k)
+    {
+        ans = str;
+       large(str, k, 0);
+       return ans;
+    }
+};
