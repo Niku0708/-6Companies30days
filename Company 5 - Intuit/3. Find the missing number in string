@@ -1,0 +1,45 @@
+int missingNumber(const string& s)
+{
+    bool found = false;
+    int ans;
+    for(int i=1; i<=6; i++)
+    {
+        int last = stoi(s.substr(0, i));
+        // cout<<i<<" "<<last<<"\n";
+        for(int j=i; j<s.length(); )
+        {
+            string curr = to_string(last+1);
+            // cout<<i<<" "<<curr<<" "<<s.substr(j, curr.length())<<"\n";
+            if(s.substr(j, curr.length()) == curr)
+            {
+                last++;
+                j += curr.length();
+                continue;
+            }
+            curr = to_string(last+2);
+            // cout<<i<<" "<<curr<<" "<<s.substr(j, curr.length())<<"\n";
+            if(s.substr(j, curr.length()) == curr)  //last+1 is missing
+            {
+                if(found)   //second missing number found
+                {
+                    found = false;
+                    break;
+                }
+                else
+                {
+                    found = true;
+                    ans = last+1;
+                    last = last+2;
+                    j += curr.length();
+                }
+            }
+            else
+                break;
+        }
+        if(found)
+            break;
+    }
+    if(found)
+        return ans;
+    return -1;
+}
