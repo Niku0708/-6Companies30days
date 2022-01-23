@@ -1,0 +1,49 @@
+class Solution {
+public:
+    int ans;
+    
+    bool possible(vector<int> &nums, int m, int mid)
+    {
+        int cnt = 1;
+        int current = nums[0];
+        for(int i=1; i<nums.size(); i++)
+        {
+            if(current + nums[i] <= mid)
+            {
+                current += nums[i];
+            }
+            else
+            {
+                current = nums[i];
+                cnt++;
+                if(cnt > m)
+                    return false;
+            }
+        }
+        return true;
+    }
+    
+    int splitArray(vector<int>& nums, int m) {
+        ans = INT_MAX;
+        int lo = INT_MIN, hi = 0;
+        for(int i=0; i<nums.size(); i++)
+        {
+            hi += nums[i];
+            lo = max(lo, nums[i]);
+        }
+        // cout<<lo<<" "<<hi<<"\n";
+        // cout<<possible(nums, m, 18);
+        while(lo <= hi)
+        {
+            int mid = lo + (hi-lo)/2;
+            if(possible(nums, m, mid))
+            {
+                ans = min(ans, mid);
+                hi = mid-1;
+            }
+            else
+                lo = mid+1;
+        }
+        return ans;
+    }
+};
