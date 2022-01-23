@@ -1,0 +1,38 @@
+class Solution {
+public:
+    void bfs(vector<vector<int>> &g, int src, vector<bool> &visited)
+    {
+        int n = g.size();
+        queue<int> q;
+        q.push(src);
+        visited[src] = true;
+        while(!q.empty())
+        {
+            int ele = q.front();
+            q.pop();
+            for(int i=0; i<n; i++)
+            {
+                if(g[ele][i] == 1 and !visited[i])
+                {
+                    visited[i] = true;
+                    q.push(i);
+                }
+            }
+        }
+    }
+    
+    int findCircleNum(vector<vector<int>>& g) {
+        int n = g.size();
+        vector<bool> visited(n, false);
+        int provinces = 0;
+        for(int i=0; i<n; i++)
+        {
+            if(!visited[i])
+            {
+                provinces++;
+                bfs(g, i, visited);
+            }
+        }
+        return provinces;
+    }
+};
