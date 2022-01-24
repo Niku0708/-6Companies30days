@@ -1,0 +1,97 @@
+class Solution {
+public:
+    int n, m;
+    int dir[5] = {-1, 0, 1, 0, -1};
+    
+    bool valid(int i, int j, vector<vector<bool>> &visited)
+    {
+        return i>=0 and j>=0 and i<n and j<m and !visited[i][j];
+    }
+    
+    void bfs(vector<vector<int>> &heights, int i, int j, vector<vector<bool>> &visited, vector<vector<bool>> &marker)
+    {
+        queue<pair<int, int>> q;
+        q.push({i, j});
+        marker[i][j] = true;
+        visited[i][j] = true;
+        // cout<<"ENTERED\n";
+        while(!q.empty())
+        {
+            pair<int, int> p = q.front();
+            q.pop();
+            i = p.first, j=p.second;
+            // cout<<i<<","<<j<<" -> ";
+            for(int k=0; k<4; k++)
+            {
+                int x = p.first+dir[k];
+                int y = p.second+dir[k+1];
+                if(valid(x, y, visited) and heights[x][y] >= heights[i][j])
+                {
+                    visited[x][y] = true;
+                    marker[x][y] = true;
+                    q.push({x,y});
+                    // cout<<x<<","<<y<<" ";
+                }
+            }
+            // cout<<"\n";
+        }
+    }
+    
+    vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights) {
+        n = heights.size();
+        m = heights[0].size();
+        vector<vector<bool>> pacific(n, (vector<bool> (m, false)));
+        vector<vector<bool>> atlantic(n, (vector<bool> (m, false)));
+        for(int j=0; j<m; j++){
+            pacific[0][j] = true;
+            atlantic[n-1][j] = true;
+        }
+        for(int i=0; i<n; i++){
+            pacific[i][0] = true;
+            atlantic[i][m-1] = true;
+        }
+        
+        vector<vector<bool>> pacVisit(n, (vector<bool> (m, false)));
+        vector<vector<bool>> atVisit(n, (vector<bool> (m, false)));
+        
+        // for(int i=0; i<n; i++){
+        //     for(int j=0; j<m; j++)
+        //         cout<<atlantic[i][j]<<" ";
+        //     cout<<"\n";
+        // }
+        // cout<<"\n";
+        // for(int i=0; i<n; i++){
+        //     for(int j=0; j<m; j++)
+        //         cout<<pacific[i][j]<<" ";
+        //     cout<<"\n";
+        // }
+        // cout<<"\n";
+        
+        for(int j=0; j<m; j++)
+        {
+            if(!pacVisit[0][j])
+                bfs(heights, 0, j, pacVisit, pacific);
+            if(!atVisit[n-1][j])
+                bfs(heights, n-1, j, atVisit, atlantic);
+        }
+        for(int i=0; i<n; i++)
+        {
+            if(!pacVisit[i][0])
+                bfs(heights, i, 0, pacVisit, pacific);
+            if(!atVisit[i][m-1])
+                bfs(heights, i, m-1, atVisit, atlantic);
+        }
+        vector<vector<int>> ans;
+        for(int i=0; i<n; i++)
+        {
+            for(int j=0; j<m; j++)
+            {
+                // cout<<atlantic[i][j]<<" ";
+                if(atlantic[i][j] and pacific[i][j])
+                    ans.push_back({i, j});
+            }
+            // cout<<"\n";
+        }
+        return ans;
+    }
+};
