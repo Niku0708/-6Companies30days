@@ -1,0 +1,56 @@
+class Solution {
+public:
+    vector<int> ans;
+    vector<bool> path;
+    bool cycle;
+    
+    void dfs(vector<int> edges[], int src, vector<bool> &visited)
+    {
+        for(auto edge:edges[src])
+        {
+            if(path[edge])
+            {
+                cycle = true;
+                return;
+            }
+            if(!visited[edge]){
+                path[edge] = true;
+                visited[edge] = true;
+                dfs(edges, edge, visited);
+            }
+        }
+        path[src] = false;
+        ans.push_back(src);
+    }
+    
+    vector<int> findOrder(int n, vector<vector<int>>& pre) {
+        vector<int> edges[n];
+        vector<bool> visited(n, false);
+        for(int i=0; i<pre.size(); i++)
+            edges[pre[i][1]].push_back(pre[i][0]);
+        
+        // for(int i=0; i<n; i++)
+        // {
+        //     cout<<i<<" -> ";
+        //     for(auto edge:edges[i])
+        //         cout<<edge<<", ";
+        //     cout<<"\n";
+        // }
+        
+        ans.reserve(n);
+        path.assign(n, false);
+        cycle = false;
+        for(int i=0; i<n; i++)
+        {
+            if(!visited[i]){
+                path[i] = true;
+                visited[i] = true;
+                dfs(edges, i, visited);
+                if(cycle)
+                    return {};
+            }
+        }
+        reverse(ans.begin(), ans.end());
+        return ans;
+    }
+};
