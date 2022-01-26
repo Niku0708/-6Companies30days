@@ -1,0 +1,44 @@
+int maxDistance(vector<vector<int>>& grid) {
+        n = grid.size();
+        queue<pair<int, int>> q;
+        bool water = false;
+        for(int i=0; i<n; i++)
+        {
+            for(int j=0; j<n; j++)
+            {
+                if(grid[i][j] == 1)
+                    q.push({i, j});
+                else
+                    water = true;
+            }
+        }
+        if(q.empty() or !water)
+            return -1;
+        q.push({-1, -1});
+        int ans = 0;
+        while(!q.empty())
+        {
+            pair<int, int> current = q.front();
+            q.pop();
+            if(current.first == -1)
+            {
+                if(q.empty())
+                    break;
+                else{
+                    ans++;
+                    q.push({-1, -1});
+                }
+            }
+            for(int i = 0; i<4; i++)
+            {
+                int x = current.first + dir[i];
+                int y = current.second + dir[i+1];
+                if(x>=0 and y>=0 and x<n and y<n and grid[x][y]==0)
+                {
+                    grid[x][y] = 1;
+                    q.push({x, y});
+                }
+            }
+        }
+        return ans;
+    }
