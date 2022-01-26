@@ -1,0 +1,119 @@
+/*
+// Definition for a QuadTree node.
+class Node {
+public:
+    bool val;
+    bool isLeaf;
+    Node* topLeft;
+    Node* topRight;
+    Node* bottomLeft;
+    Node* bottomRight;
+    
+    Node() {
+        val = false;
+        isLeaf = false;
+        topLeft = NULL;
+        topRight = NULL;
+        bottomLeft = NULL;
+        bottomRight = NULL;
+    }
+    
+    Node(bool _val, bool _isLeaf) {
+        val = _val;
+        isLeaf = _isLeaf;
+        topLeft = NULL;
+        topRight = NULL;
+        bottomLeft = NULL;
+        bottomRight = NULL;
+    }
+    
+    Node(bool _val, bool _isLeaf, Node* _topLeft, Node* _topRight, Node* _bottomLeft, Node* _bottomRight) {
+        val = _val;
+        isLeaf = _isLeaf;
+        topLeft = _topLeft;
+        topRight = _topRight;
+        bottomLeft = _bottomLeft;
+        bottomRight = _bottomRight;
+    }
+};
+*/
+
+class Solution {
+public:
+    vector<vector<int>> cnt;
+    int n;
+    Node *leaves[2];
+    
+    Node *helper(int i, int j, int rows, int col, vector<vector<int>> &grid)
+    {
+        if(i>=n or j>=n)
+            return NULL;
+        if(i==rows-1 and j == col-1)
+        {
+            Node *temp = new Node(grid[i][j] == 1, true);
+            return temp;
+            // if(grid[i][j] == 1)
+            //     return leaves[1];
+            // return leaves[0];
+        }
+        // if(cnt[i][j] == 0)
+        // {
+        //     return leaves[0];
+        // }
+        //check for all ones
+        int ones = cnt[i][j];
+        if(rows != n)
+            ones -= cnt[rows][j];
+        if(col != n)
+            ones -= cnt[i][col];
+        if(col != n and rows != n)
+            ones += cnt[rows][col];
+        if(ones == (rows-i)*(col-j))
+        {
+            Node *temp = new Node(true, true);
+            return temp;
+            return leaves[1];
+        }
+        if(ones == 0){
+            Node *temp = new Node(false, true);
+            return temp;
+            return leaves[0];
+        }
+        int x = (rows+i)/2;
+        int y = (col+j)/2;
+        Node *temp = new Node();
+        temp->topLeft = helper(i, j, x, y, grid);
+        temp->bottomRight = helper(x, y, rows, col, grid);
+        temp->topRight = helper(i, y, x, col, grid);
+        temp->bottomLeft = helper(x, j, rows, y, grid);
+        return temp;
+    }
+    
+    Node* construct(vector<vector<int>>& grid) {
+        n = grid.size();
+        cnt=grid;
+        for(int j=n-2; j>=0; j--)
+            cnt[n-1][j] += cnt[n-1][j+1];
+        for(int i=n-2; i>=0; i--)
+            cnt[i][n-1] += cnt[i+1][n-1];
+        
+        
+        for(int i=n-2; i>=0; i--)
+        {
+            for(int j=n-2; j>=0; j--)
+            {
+                cnt[i][j] += cnt[i+1][j] + cnt[i][j+1] - cnt[i+1][j+1];
+            }
+        }
+        // for(int i=0; i<n; i++)
+        // {
+        //     for(int j=0; j<n; j++)
+        //         cout<<cnt[i][j]<<" ";
+        //     cout<<"\n";
+        // }
+        
+        leaves[0] = new Node(false, true);
+        leaves[1] = new Node(true, true);
+        return helper(0, 0, n, n, grid);
+    }
+};
