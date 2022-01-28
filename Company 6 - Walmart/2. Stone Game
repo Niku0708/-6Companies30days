@@ -1,0 +1,14 @@
+class Solution {
+public:
+    
+    bool stoneGame(vector<int>& piles) {
+        int even = 0, odd = 0;
+        for(int i=0; i<piles.size(); i+=2)
+            even += piles[i];
+        for(int i=1; i<piles.size(); i+=2)
+            odd += piles[i];
+        if(odd != even)
+            return true;
+        return false;
+    }
+};
