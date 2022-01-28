@@ -1,0 +1,46 @@
+class Solution {
+public:
+    bool winnerOfGame(string colors) {
+        int alice = 0, bob = 0, as = 0, bs = 0, cnt=1;
+        char last = colors[0];
+        for(int i=1; i<colors.size(); i++)
+        {
+            if(colors[i] == last)
+            {
+                cnt++;
+            }
+            else if(cnt < 3)
+            {
+                last = colors[i];
+                cnt = 1;
+            }
+            else
+            {
+                if(last == 'A')
+                {
+                    as += cnt-2;
+                }
+                else
+                {
+                    bs += cnt-2;
+                }
+                last = colors[i];
+                cnt = 1;
+            }
+        }
+        if(cnt>=3)
+        {
+            if(last == 'A')
+            {
+                as += cnt-2;
+            }
+            else
+            {
+                bs += cnt-2;
+            }
+        }
+        if(as>bs)
+            return true;
+        return false;
+    }
+};
