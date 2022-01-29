@@ -1,0 +1,11 @@
+int height(int N){
+    int ans = 0;
+    while(true)
+    {
+        int temp = ans*(ans+1)/2;
+        if(temp>N)
+            break;
+        ans++;
+    }
+    return ans-1;
+}
